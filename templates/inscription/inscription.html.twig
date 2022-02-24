@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block carousel %}{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+                {{ message }}
+            </div>
+  
+{% endfor %}
+{% for message in app.flashes('erreur') %}
+    <div class="alert alert-warning">
+                {{ message }}
+            </div>
+  
+{% endfor %}
+    <div class="p-7">
+    <h1 class="inscrip mt-3">Inscription</h1>
+    {{ form(f) }}
+    </div>
+{% endblock %}

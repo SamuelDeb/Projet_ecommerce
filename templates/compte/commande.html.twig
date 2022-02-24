@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Commandes
+{% endblock %}
+{% block stylesheets %}
+			<link rel="stylesheet" href="{{ asset ('style.css')}}">																																																			         #}
+			<link href="{{ asset ('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+			
+		{% endblock %}
+{% block subtitle %}Mes Commandes
+{% endblock %}
+{% block carousel %}{% endblock %}
+
+{% block body %}
+	Mes Commandes : 
+	{% if app.user.commandes|length ==0 %}
+		<h5 class="text-center">
+			Vous n'avez pas encore commander. pour commander retrouver tous nos mangas ici :
+			<a href="{{ path('produit')}}">
+				Nos produit</a>
+		</h5>
+
+	{% else %}
+		<div class="row">
+			{% for cmd in app.user.commandes %}
+
+				<div class="card border-primary  bg-light mb-3 " style="max-width: 30rem;">
+
+					<div class="card-header bg-primary mb-3">
+						<p>REF : {{ cmd.reference }}</p>
+						</div>
+					<div class="card-body ">
+						<h4 class="card-title"></h4>
+						<p class="card-text ">
+							Date : {{cmd.createdAt|date('d-m-Y H:i:s')}}<br>
+							Adresse de Livraison : <br> {{cmd.adrLivraison|replace({'[br]' : ' '})|raw }}<br>
+						</p>
+						<a class="btn btn-primary my-2 my-sm-0" href="{{ path('detailCommande' , { 'reference' : cmd.reference })}}" type="submit">Détail de la commande</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

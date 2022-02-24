@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choix Transporteur
+{% endblock %}
+{% block carousel %}{% endblock %}
+{% block body %}
+
+	
+		<div class="row">
+			<div class="col">
+				{% set formhtml %}
+				{% set param = { 'adrL' : adrL, 'adrF' : adrF} %}
+				{{ form_start(f, { action : path ('recap_commande', param)}) }}
+				{{ form_row(f.transporteur,
+				{
+					'label_attr' : {'class' : 'fs-6'},
+					'attr' : {'class' : 'alert alert-info'}
+				})
+				}}
+				{{ form_end(f)}}
+				{% endset %}
+				{{ formhtml|replace({'[br]' : '<br/>'})|raw }}
+			</div>
+		</div>
+	{% endblock %}

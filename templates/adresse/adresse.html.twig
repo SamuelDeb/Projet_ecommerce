@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adresse
+{% endblock %}
+{% block subtitle %}Mes adresses
+{% endblock %}
+{% block carousel %}{% endblock %}
+
+{% block body %}
+<a href="{{ path('ajouterAdresse') }}" class="btn btn-info float-right mb-5">
+<i class="fas fa-plus" >Ajouter un adresse</i>
+</a>
+ {% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+                {{ message }}
+            </div>
+  
+{% endfor %}
+	<div class="row">
+		<div class="col-md-4">
+			{% for adr in app.user.adresses %}
+				<div class="card bg-light mb-3" style="max-width: 20rem;">
+					<div class="card-header">{{adr.libele}}</div>
+					<div class="card-body">
+						<h4 class="card-title"></h4>
+						<p class="card-text">
+							{{adr.nom}}<br>
+							{{adr.prenom}}<br>
+							{{adr.numero}} {{adr.rue}}   {{adr.nomAdresse}}<br>
+							{{adr.codePostale}} {{adr.Ville}} {{adr.pays}}<br>
+							</p>
+                            <a class="btn btn-warning" href="{{ path('modifierAdresse', {'id' : adr.id }) }}">Modifier</a>
+                            <a class="btn btn-danger" href="{{ path('supprimerAdresse', {'id' : adr.id }) }}" class="card-link">Supprimer</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+   
+{% endblock %}

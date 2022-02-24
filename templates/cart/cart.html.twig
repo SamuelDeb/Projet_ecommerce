@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier
+{% endblock %}
+{% block carousel %}{% endblock %}
+
+{% block body %}
+{% if panier|length >0 %}
+	<h1>Votre Panier :</h1>
+	<div class="text-end">
+		<a href="{{ path('viderPanier') }}" class="btn btn-warning">Vider le panier</a>
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Image</th>
+				<th scope="col">Nom</th>
+				<th scope="col">Quantité</th>
+				<th scope="col">Prix</th>
+				<th scope="col">Prix Total</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% set t = null %}
+			{% for produit in panier %}
+				<tr>
+					<td><img class="img-fluid img-thumbnail rounded" src="assets/images/produits/{{produit.produit.image}}" alt="{{produit.produit.nom}}" width="100px"></td>
+					<td>{{ produit.produit.nom }}</td>
+					<td>
+						<a href="{{ path('reduirePanier', { 'id' : produit.produit.id})}}"><img class="img-fluid img-thumbnail " src="{{ asset('assets/images/moins.png')}}" width="30px"></a>
+						{{ produit.quantite }}<a href="{{ path('ajouterPanier', { 'id' : produit.produit.id})}}"><img class="img-fluid img-thumbnail " src="{{ asset('assets/images/plus.png')}}" width="30px"></a>
+					</td>
+					<td>{{ (produit.produit.prix / 100) |number_format(2, ',' , '.')}}€</td>
+					<td>{{ ((produit.produit.prix * produit.quantite)/ 100 )}}€</td>
+					<td>
+						<a class="" href="{{ path('detailsProduit' , { 'id' : produit.produit.id })}}" type="submit"><img src="{{ asset('assets/images/eye.jpg')}}" alt="voir" width="30px"></a>
+						<a class="" href="{{ path('supprimerPanier' , { 'id' : produit.produit.id })}}" type="submit"><img src="{{ asset('assets/images/suppr.jpg')}}" alt="supprimer" width="30px"></a>
+					</td>
+				</tr>
+				{% set t = t + (produit.produit.prix * produit.quantite) %}
+			{% endfor %}
+		</tbody>
+	</table>
+    <div class="text-end">
+	<p>Total :
+		{{(t / 100)|number_format(2, ',', '.') }}€
+	</p><br>
+	<a class="btn btn-success btn-block" href="{{path ('choisirAdresse')}}">Valider Panier</a>
+    </div>
+    {% else %}
+<h1>Votre Panier est vide.</h1>
+<p>Veuillez ajouter des articles. <a href="{{path ('produit')}}">Voir tous nos produits.</a></p>
+    {% endif %}
+</div>{% endblock %}

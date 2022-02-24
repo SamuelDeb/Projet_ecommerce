@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif Commande
+{% endblock %}
+
+{% block subtitle %}Récapitulatif Commande :
+{% endblock %}
+
+{% block body %}
+	
+		</div>
+		<div class="col-md-8">
+			<h3>Ma commande n°{{ order.reference }}</h3>
+    <a href="{{ path('commande') }}">Retourner à mes commandes</a><br />
+    <hr>
+			<div>
+				{% set t = null %}
+				{% for cmd in app.user.commandes %}
+					<div class="row">
+						
+						<div class="col-2">{{ produit.nom }}</div>
+						<div class="col-2">
+							{{ produit.quantite }}
+						</div>
+						<div class="col-2">{{ (produit.produit.prix / 100)|number_format(2, ',' , '.')}}€</div>
+						<div class="col-2">{{ ((produit.produit.prix * produit.quantite)/ 100 )}}€</div>
+
+					</div>
+					{% set t = t + (produit.produit.prix * produit.quantite) %}
+				{% endfor %}
+				<hr>
+				<div class="text-end">
+					<strong>Sous total :
+					</strong>
+					{{ (t / 100)|number_format(2,',','.') }}
+					€
+					<br>
+					<strong>Frais de livraison :
+					</strong>
+					{{ (transport.prix)|number_format(2,',','.') }}
+					€
+					<br>
+					<strong>total :
+					</strong>
+					{{ ((t / 100 + transport.prix))|number_format(2,',','.') }}
+					€
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block script %}
+	
+{% endblock %}

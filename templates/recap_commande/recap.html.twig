@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif Commande
+{% endblock %}
+{% block carousel %}{% endblock %}
+{% block subtitle %}Récapitulatif Commande :
+{% endblock %}
+{% block jsStripe %}
+	<script src="https://js.stripe.com/v3/"></script>
+
+{% endblock %}
+{% block body %}
+	<div class="row">
+		<div class="col-md-4">
+			<div>
+				<strong>Adresse de livraison choisis</strong>
+				<hr>
+				{{ adrL|replace({'[br]' : '<br/>'})|raw }}
+				<hr>
+			</div>
+			<div>
+				<strong>Adresse de facturation choisis</strong>
+				<hr>
+				{{ adrF|replace({'[br]' : '<br/>'})|raw }}
+				<hr>
+			</div>
+			<div>
+				<strong>Mode de livraison choisis</strong>
+				<hr>
+				{{ transport.nom}}
+				{{ transport.description}}
+				{{(transport.prix / 100) |number_format(2, ',' , '.')}}€
+				<hr>
+
+			</div>
+		</div>
+		<div class="col-md-8">
+			<h2>Récapitulatif de votre panier</h2>
+			<div>
+				{% set t = null %}
+				{% for produit in panier %}
+					<div class="row">
+						<div class="col-2 my-2"><img class="img-fluid img-thumbnail rounded" src="assets/images/produits/{{produit.produit.image}}" alt="{{produit.produit.nom}}" width="100px"></div>
+						<div class="col-2">{{ produit.produit.nom }}</div>
+						<div class="col-2">
+							{{ produit.quantite }}
+						</div>
+						<div class="col-2">{{ (produit.produit.prix / 100)|number_format(2, ',' , '.')}}€</div>
+						<div class="col-2">{{ ((produit.produit.prix * produit.quantite)/ 100 )}}€</div>
+
+					</div>
+					{% set t = t + (produit.produit.prix * produit.quantite) %}
+				{% endfor %}
+				<hr>
+				<div class="text-end">
+					<strong>Sous total :
+					</strong>
+					{{ (t / 100)|number_format(2,',','.') }}
+					€
+					<br>
+					<strong>Frais de livraison :
+					</strong>
+					{{ (transport.prix)|number_format(2,',','.') }}
+					€
+					<br>
+					<strong>total à payer :
+					</strong>
+					{{ ((t / 100 + transport.prix))|number_format(2,',','.') }}
+					€
+					<br>
+				</div>
+			</div>
+			<div class="text-end">
+				<a id="btnPayer" class="btn btn-success btn-block">Payer |
+					{{ (t / 100 + transport.prix)|number_format(2, ',', '.') }}€</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block script %}
+	<script type="text/javascript">
+		// Utiliser la clé public pour réceptionner l'évènement
+var stripe = Stripe("pk_test_51KT0sHFoeBzcLSQgpfW1s0OOOx11KzMOfhwSIMncOpXnSfBk3w8R0JTDybJaY5MhNcnHdRoqLTirK9fJE02HFXYL00zVQVnGQH");
+var checkBtn = document.getElementById('btnPayer');
+checkBtn.addEventListener("click", function () {
+fetch("/commande/create-session/{{ reference }}", {method: 'POST'}).then(function (response) {
+return response.json();
+}).then(function (session) {
+return stripe.redirectToCheckout({sessionId: session.id})
+}).then(function (result) {
+if (result.error) {
+alert(result.error.message);
+}
+}).catch(function (error) {
+console.error("Error:", error);
+});
+});
+	</script>
+{% endblock %}

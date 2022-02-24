@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center">Meilleures ventes</h1>
+	 <div class="row">
+		<div class="row">
+			{% for produit in produit %}
+				{% if produit.isBest == true  %}
+					<div class="col-sm-2">
+						<div class="card" style="width: 15rem;">
+							<a href="{{path ('detailsProduit' , { 'id' : produit.id })}}"><img class="card-img-top" src="assets/images/produits/{{produit.image}}" alt="Card image cap"></a>
+							<div class="card-body">
+								<h5 class="card-title">{{ produit.nom }}</h5>
+
+								<p class="card-text">Prix :
+									{{ (produit.prix / 100) |number_format(2, ',' , '.')}}€</p>
+								<a class="btn btn-primary my-2 my-sm-0" href="{{ path('detailsProduit' , { 'id' : produit.id })}}" type="submit"><img src="{{ asset('assets/images/eye.jpg')}}" alt="voir" width="20px"></a>
+								<a class="btn btn-primary my-2 my-sm-0" href="{{path('ajouterPanier' , { 'id' : produit.id })}}" type="submit"><img src="{{ asset('assets/images/cart.svg')}}" alt="panier" width="20px">
+									Ajouter au panier</a>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div> 
+	{% endblock %}
