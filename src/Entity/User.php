@@ -44,10 +44,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commande::class)]
     private $commandes;
 
+    #[ORM\Column(type: 'boolean')]
+    private $is_Subscribe=0;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: News::class)]
+    private $news;
+
+    
+
+    
+
+   
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->news = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -227,4 +240,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+ 
+    public function getIsSubscribe(): ?bool
+    {
+        return $this->is_Subscribe;
+    }
+
+    public function setIsSubscribe(bool $is_Subscribe): self
+    {
+        $this->is_Subscribe = $is_Subscribe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|News[]
+     */
+    public function getNews(): Collection
+    {
+        return $this->news;
+    }
+
+    public function addNews(News $news): self
+    {
+        if (!$this->news->contains($news)) {
+            $this->news[] = $news;
+            $news->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNews(News $news): self
+    {
+        if ($this->news->removeElement($news)) {
+            // set the owning side to null (unless already changed)
+            if ($news->getUser() === $this) {
+                $news->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
+   
 }

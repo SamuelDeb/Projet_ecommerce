@@ -77,5 +77,39 @@ public function contacter($idModele, $emailSource, $nameSource, $subject, $email
         
      
 }
+
+public function newsletter($idModele, $emailDest, $nameDest, $subject)
+    {
+        $mj = new Client($this->apiKey, $this->secretKey, true,['version' => 'v3.1']);
+        
+        $body = [
+          'Messages' => [
+            [
+              'From' => [
+                'Email' => "gsvlad@hotmail.com",
+                'Name' => "Admin"
+                
+              ],
+              'To' => [
+                [
+                  'Email' => $emailDest,
+                  'Name' => $nameDest
+                ]
+              ],
+              'TemplateID' => $idModele,
+              'TemplateLanguage' => true,
+              'Subject' => $subject,
+              'Variables' => [
+                  'emailSource'=> $emailDest,
+                  'nameSource' => $nameDest
+            ]
+          ]
+          ]
+        ];
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
+        $response->success();
+        
+     
+}
 } 
 ?>

@@ -2,12 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\News;
 use App\Entity\User;
 use App\Entity\Adresse;
 use App\Entity\Produit;
 use App\Entity\Commande;
 use App\Entity\Categorie;
 use App\Entity\Transporteur;
+use App\Controller\Admin\UserCrudController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -103,5 +105,6 @@ class DashboardController extends AbstractDashboardController
             
             MenuItem::linkToCrud('Visualiser', 'fas fa-eye', Commande::class)
         ]);
+      
     }
 }

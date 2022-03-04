@@ -40,6 +40,7 @@ class InscriptionController extends AbstractController
             $pwdHash = $passwordHasher->hashPassword($user,$user->getPassword());
             //Injection du password hacher dans la l'user
             $user->setPassword($pwdHash);
+            $user->setIsSubscribe(true);
             //figer les données à envoyer vers la BDD
             $this->em->persist($user);
             //Sauvegarde dans la BDD 
@@ -52,7 +53,8 @@ class InscriptionController extends AbstractController
                 $user->getEmail(),
                 $user->getNom(),
                 "Inscription réussie",
-                "Bonjour, félicitation votre inscription est valide vous pouvez vous connecter "
+                "Bonjour, félicitation votre inscription est valide vous pouvez vous connecter ",
+                $user->getEmail()
             );
             $this->addFlash('success', 'Insciption réussi, vous allez recevoir un email de confirmation');
         }

@@ -28,10 +28,7 @@ class UserCrudController extends AbstractCrudController
             EmailField::new('email')->hideOnIndex(),
             TextField::new('telephone'),
             DateTimeField::new('dateNaissance'),
-            //PasswordField::new('password'),
-           
-           
-            
+            //PasswordField::new('password'),   
         ];
     }
 
