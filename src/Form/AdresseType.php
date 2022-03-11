@@ -58,7 +58,7 @@ class AdresseType extends AbstractType
                     'boulevard'=>'boulevard',
                     
                 ],
-                'multiple'=>false,
+                'multiple'=>true,
                 'expanded'=>true,
             ])
             ->add('codePostale', TextType::class,[
